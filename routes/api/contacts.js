@@ -3,13 +3,14 @@ const express = require("express");
 const ctrl = require("../../controllers/contacts");
 
 const isValidBody = require("../../middlewares/isValidBody");
+const isValidParams = require("../../middlewares/isValidParams");
 const isValidId = require("../../middlewares/isValidId");
 const authenticate = require("../../middlewares/authenticate");
 const { schemas } = require("../../models/contact");
 
 const router = express.Router();
 
-router.get("/", authenticate, ctrl.getAll);
+router.get("/", authenticate, isValidParams(schemas.requestParamsSchema), ctrl.getAll);
 
 router.get("/:contactId", authenticate, isValidId, ctrl.getById);
 

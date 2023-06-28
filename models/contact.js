@@ -66,9 +66,19 @@ const updateFavoriteSchema = Joi.object({
   }),
 });
 
+const requestParamsSchema = Joi.object().keys({
+  name: Joi.string(),
+  email: Joi.string().regex(emailRegexp),
+  phone: Joi.string().regex(phoneRegexp),
+  favorite: Joi.boolean(),
+  page: Joi.number().min(1),
+  limit: Joi.number().min(1),
+});
+
 const schemas = {
   addSchema,
   updateFavoriteSchema,
+  requestParamsSchema
 };
 
 const Contact = model("contact", contactSchema);
