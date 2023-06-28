@@ -10,17 +10,18 @@ const { schemas } = require("../../models/contact");
 
 const router = express.Router();
 
-router.get("/", authenticate, isValidParams(schemas.requestParamsSchema), ctrl.getAll);
+router.use(authenticate)
 
-router.get("/:contactId", authenticate, isValidId, ctrl.getById);
+router.get("/", isValidParams(schemas.requestParamsSchema), ctrl.getAll);
 
-router.post("/", authenticate, isValidBody(schemas.addSchema), ctrl.add);
+router.get("/:contactId", isValidId, ctrl.getById);
 
-router.delete("/:contactId", authenticate, isValidId, ctrl.deleteById);
+router.post("/", isValidBody(schemas.addSchema), ctrl.add);
+
+router.delete("/:contactId", isValidId, ctrl.deleteById);
 
 router.put(
   "/:contactId",
-  authenticate,
   isValidId,
   isValidBody(schemas.addSchema),
   ctrl.updateById
@@ -28,7 +29,6 @@ router.put(
 
 router.patch(
   "/:contactId/favorite",
-  authenticate,
   isValidId,
   isValidBody(schemas.updateFavoriteSchema, "missing field favorite"),
   ctrl.updateFavorite
