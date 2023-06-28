@@ -2,13 +2,15 @@ const express = require("express");
 
 const ctrl = require("../../controllers/contacts");
 
-const isValidBody = require("../../middlewares/isValidBody");
-const isValidId = require("../../middlewares/isValidId");
+const {authenticate, isValidId, isValidBody, isValidParams} = require("../../middlewares");
+
 const { schemas } = require("../../models/contact");
 
 const router = express.Router();
 
-router.get("/", ctrl.getAll);
+router.use(authenticate)
+
+router.get("/", isValidParams(schemas.requestParamsSchema), ctrl.getAll);
 
 router.get("/:contactId", isValidId, ctrl.getById);
 
@@ -19,7 +21,7 @@ router.delete("/:contactId", isValidId, ctrl.deleteById);
 router.put(
   "/:contactId",
   isValidId,
-  isValidBody(schemas.addSchema, "missing fields"),
+  isValidBody(schemas.addSchema),
   ctrl.updateById
 );
 
