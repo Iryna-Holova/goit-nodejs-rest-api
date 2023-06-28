@@ -2,8 +2,7 @@ const express = require("express");
 
 const ctrl = require("../../controllers/auth");
 
-const isValidBody = require("../../middlewares/isValidBody");
-const authenticate = require("../../middlewares/authenticate");
+const {authenticate, isValidBody} = require('../../middlewares');
 const { schemas } = require("../../models/user");
 
 const router = express.Router();
