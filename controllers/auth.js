@@ -98,8 +98,9 @@ const updateAvatar = async (req, res) => {
     .then((image) => {
       image.cover(250, 250).write(newPath);
     })
-    .catch((error) => {
-      throw error;
+    .catch((err) => {
+      fs.unlink(oldPath);
+      throw HttpError(400, err.message);
     });
 
   fs.unlink(oldPath);
