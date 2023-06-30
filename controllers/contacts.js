@@ -3,22 +3,13 @@ const { Contact } = require("../models/contact");
 const HttpError = require("../helpers/httpError");
 const ctrlWrapper = require("../helpers/ctrlWrapper");
 
-const filters = ["name", "email", "phone", "favorite"];
-
 const getAll = async (req, res) => {
   const { _id: owner } = req.user;
-  
-  const { page = 1, limit = 20 } = req.query;
+
+  const { page = 1, limit = 20, ...query } = req.query;
   const skip = (page - 1) * limit;
 
-  const filterQuery = {};
-  Object.keys(req.query).forEach((key) => {
-    if (filters.includes(key)) {
-      filterQuery[key] = req.query[key];
-    }
-  });
-
-  const result = await Contact.find({ owner, ...filterQuery }, null, { skip, limit });
+  const result = await Contact.find({ owner, ...query }, null, { skip, limit });
   res.json(result);
 };
 
