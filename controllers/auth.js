@@ -91,14 +91,18 @@ const updateSubscription = async (req, res) => {
 const updateAvatar = async (req, res) => {
   const { _id } = req.user;
   const { path: oldPath, filename } = req.file;
-
-  await Jimp.read(oldPath).then((image) => {
-    image.cover( 250, 250).write(oldPath);
-  });
-
   const newName = `${_id}_${filename}`;
   const newPath = path.join(avatarDir, newName);
-  await fs.rename(oldPath, newPath);
+
+  await Jimp.read(oldPath)
+    .then((image) => {
+      image.cover(250, 250).write(newPath);
+    })
+    .catch((error) => {
+      throw error;
+    });
+
+  fs.unlink(oldPath);
   const avatarURL = path.join("avatars", newName);
   await User.findByIdAndUpdate(_id, { avatarURL });
 
