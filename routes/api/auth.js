@@ -1,6 +1,6 @@
 const express = require("express");
 
-const ctrl = require("../../controllers/auth");
+const ctrl = require("../../controllers/auth-controller");
 
 const { authenticate, isValidBody, upload } = require("../../middlewares");
 const { schemas } = require("../../models/user");
@@ -8,6 +8,14 @@ const { schemas } = require("../../models/user");
 const router = express.Router();
 
 router.post("/register", isValidBody(schemas.registerSchema), ctrl.register);
+
+router.get("/verify/:verificationToken", ctrl.verify);
+
+router.post(
+  "/verify",
+  isValidBody(schemas.emailSchema, "missing required field email"),
+  ctrl.resendVerify
+);
 
 router.post("/login", isValidBody(schemas.loginSchema), ctrl.login);
 
