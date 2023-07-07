@@ -3,7 +3,7 @@ const express = require("express");
 const ctrl = require("../../controllers/auth-controller");
 
 const { authenticate, isValidBody, upload } = require("../../middlewares");
-const { schemas } = require("../../models/user");
+const { schemas } = require("../../models/user-model");
 
 const router = express.Router();
 

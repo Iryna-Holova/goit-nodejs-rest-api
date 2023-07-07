@@ -6,7 +6,7 @@ const gravatar = require("gravatar");
 const Jimp = require("jimp");
 const { uid } = require("uid");
 
-const { User } = require("../models/user");
+const { User } = require("../models/user-model");
 
 const { ctrlWrapper, HttpError, sendEmail } = require("../helpers");
 

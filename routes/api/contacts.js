@@ -9,7 +9,7 @@ const {
   isValidParams,
 } = require("../../middlewares");
 
-const { schemas } = require("../../models/contact");
+const { schemas } = require("../../models/contact-model");
 
 const router = express.Router();
 

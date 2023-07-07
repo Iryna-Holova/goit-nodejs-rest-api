@@ -4,7 +4,7 @@ const request = require("supertest");
 
 const app = require("../../app");
 
-const { User } = require("../../models/user");
+const { User } = require("../../models/user-model");
 
 const { DB_HOST_TEST } = process.env;
 
