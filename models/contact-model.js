@@ -1,7 +1,7 @@
 const { Schema, model } = require("mongoose");
 const Joi = require("joi");
 
-const handleMongooseError = require("../helpers/handleMongooseError");
+const { handleMongooseError } = require("../helpers");
 
 const contactSchema = new Schema(
   {
@@ -32,38 +32,15 @@ contactSchema.post("save", handleMongooseError);
 const phoneRegexp = /^\(\d{3}\)\s\d{3}-\d{4}$/;
 const emailRegexp = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/;
 
-const messages = {
-  invalid: `{{#label}} field is invalid`,
-  empty: `{{#label}} field is empty`,
-  required: `missing required {{#label}} field`,
-};
-
-const addSchema = Joi.object().keys({
-  name: Joi.string().required().messages({
-    "string.base": messages.invalid,
-    "string.empty": messages.empty,
-    "any.required": messages.required,
-  }),
-  email: Joi.string().required().regex(emailRegexp).messages({
-    "string.base": messages.invalid,
-    "string.empty": messages.empty,
-    "any.required": messages.required,
-    "string.pattern.base": messages.invalid,
-  }),
-  phone: Joi.string().required().regex(phoneRegexp).messages({
-    "string.base": messages.invalid,
-    "string.empty": messages.empty,
-    "any.required": messages.required,
-    "string.pattern.base": "invalid phone number, (XXX) XXX-XXXX is required",
-  }),
+const addSchema = Joi.object({
+  name: Joi.string().required(),
+  email: Joi.string().required().regex(emailRegexp),
+  phone: Joi.string().required().regex(phoneRegexp),
   favorite: Joi.boolean(),
 });
 
 const updateFavoriteSchema = Joi.object({
-  favorite: Joi.boolean().required().messages({
-    "boolean.base": messages.invalid,
-    "any.required": messages.required,
-  }),
+  favorite: Joi.boolean().required(),
 });
 
 const requestParamsSchema = Joi.object().keys({
@@ -78,7 +55,7 @@ const requestParamsSchema = Joi.object().keys({
 const schemas = {
   addSchema,
   updateFavoriteSchema,
-  requestParamsSchema
+  requestParamsSchema,
 };
 
 const Contact = model("contact", contactSchema);
